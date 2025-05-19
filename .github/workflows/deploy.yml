@@ -47,5 +47,5 @@ jobs:
       run: |
         eb init -p "Python 3.13" endgame --region eu-west-2
         eb use Endgame-env
-        eb deploy --staged
         eb setenv DJANGO_SETTINGS_MODULE=config.settings DEBUG=True
+        eb deploy --staged
