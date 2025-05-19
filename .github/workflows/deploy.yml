@@ -45,6 +45,6 @@ jobs:
 
     - name: Deploy to Elastic Beanstalk
       run: |
-        eb init -p "Python 3.11" endgame --region eu-west-2
+        eb init -p "Python 3.13" endgame --region eu-west-2
         eb use Endgame-env
         eb deploy --staged
