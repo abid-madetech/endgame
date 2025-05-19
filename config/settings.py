@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-#^8y^&i&(1+%ci9iy&nvur=^qedz(-oj&1*&*^9(xwg(i@aggt
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'endgame.eu-west-2.elasticbeanstalk.com'
+    'endgame.eu-west-2.elasticbeanstalk.com',
+    'localhost'
 ]
 
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
