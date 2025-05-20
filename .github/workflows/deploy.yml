@@ -50,6 +50,13 @@ jobs:
         eb setenv DJANGO_SETTINGS_MODULE=config.settings DEBUG=True
         eb deploy --staged
 
+    - name: Setup SSH access to EB instance
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EB_SSH_KEY }}" > ~/.ssh/eb.pem
+        chmod 600 ~/.ssh/eb.pem
+        echo -e "Host eb\n  HostName $(eb status | grep CNAME | awk '{print $2}')\n  User ec2-user\n  IdentityFile ~/.ssh/eb.pem\n  StrictHostKeyChecking no" >> ~/.ssh/config
+
     - name: Run Django migrations on EB instance
       run: |
         eb ssh --command "source /var/app/venv/*/bin/activate && python manage.py migrate"
