@@ -13,6 +13,30 @@ jobs:
   test-and-deploy:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DB_NAME: testdb
+      DB_USER: testuser
+      DB_PASSWORD: testpass
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DEBUG: True
+      DJANGO_SETTINGS_MODULE: config.settings
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -27,9 +51,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Run Tests with SQLite
-      env:
-        DJANGO_SETTINGS_MODULE: config.settings
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        until pg_isready -h localhost -p 5432; do sleep 1; done
+
+    - name: Run Django migrations and tests with PostgreSQL
       run: |
         python manage.py migrate --noinput
         pytest
