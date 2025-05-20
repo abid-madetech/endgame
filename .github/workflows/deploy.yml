@@ -49,3 +49,7 @@ jobs:
         eb use Endgame-env
         eb setenv DJANGO_SETTINGS_MODULE=config.settings DEBUG=True
         eb deploy --staged
+
+    - name: Run Django migrations on EB instance
+      run: |
+        eb ssh --command "source /var/app/venv/*/bin/activate && python manage.py migrate"

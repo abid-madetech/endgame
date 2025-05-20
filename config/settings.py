@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'endgame.eu-west-2.elasticbeanstalk.com',
-    'localhost'
+    'localhost',
+    '127.0.0.1',
 ]
 
 
