@@ -73,6 +73,14 @@ jobs:
       run: |
         eb init -p "Python 3.13" endgame --region eu-west-2
         eb use Endgame-env
+        eb setenv \
+          DJANGO_SETTINGS_MODULE=config.settings \
+          DEBUG=False \
+          DB_NAME=endgame \
+          DB_USER=abid \
+          DB_PASSWORD=password \
+          DB_HOST=endgame.cdgby7ohhzqb.eu-west-2.rds.amazonaws.com \
+          DB_PORT=5432
         eb deploy
 
     - name: Setup SSH access to EB instance
@@ -84,7 +92,7 @@ jobs:
 
     - name: Run Django migrations on EB instance
       run: |
-        eb ssh --command 'export $(cat /opt/elasticbeanstalk/deployment/env | xargs) && source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py migrate'
+        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py migrate'
 
     - name: Collect static files on EB instance
       run: |
