@@ -55,6 +55,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.EB_SSH_KEY }}" > ~/.ssh/endgame-eb
         chmod 600 ~/.ssh/endgame-eb
+        echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
     - name: Run Django migrations on EB instance
       run: |
