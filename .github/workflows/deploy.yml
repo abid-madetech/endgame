@@ -84,7 +84,7 @@ jobs:
 
     - name: Run Django migrations on EB instance
       run: |
-        eb ssh --command 'printenv | grep DB_HOST && source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py migrate'
+        eb ssh --command 'printenv | grep DB_HOST'
 
     - name: Collect static files on EB instance
       run: |
