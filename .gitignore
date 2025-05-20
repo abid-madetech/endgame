@@ -23,3 +23,5 @@ venv/
 htmlcov/
 .coverage
 .coveragerc
+
+.env
