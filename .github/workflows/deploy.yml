@@ -63,4 +63,5 @@ jobs:
 
     - name: Collect static files on EB instance
       run: |
-        eb ssh --command "source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py collectstatic --noinput"
+        eb ssh --command "source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py collectstatic --noinput --clear"
+        echo "Static files collected successfully"
