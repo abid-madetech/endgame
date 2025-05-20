@@ -17,12 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from core.views import KSBViewSet
+from core.views import KSBViewSet, index
 
 router = DefaultRouter()
 router.register(r'ksbs', KSBViewSet)
 
 urlpatterns = [
+    path('', index, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
 ]

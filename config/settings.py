@@ -39,7 +39,10 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20
+}
 # Application definition
 
 INSTALLED_APPS = [
@@ -69,7 +72,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,7 +93,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/tmp/db.sqlite3',
+        'NAME': '/tmp/db.sqlite3' if os.environ.get("DEBUG", "True") == "False" else BASE_DIR / 'db.sqlite3'
         # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
