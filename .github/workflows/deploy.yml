@@ -82,6 +82,7 @@ jobs:
           DB_HOST=endgame.cdgby7ohhzqb.eu-west-2.rds.amazonaws.com \
           DB_PORT=5432
         eb deploy
+        eb printenv
 
     - name: Setup SSH access to EB instance
       run: |
