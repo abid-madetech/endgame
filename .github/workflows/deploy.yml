@@ -73,7 +73,6 @@ jobs:
       run: |
         eb init -p "Python 3.13" endgame --region eu-west-2
         eb use Endgame-env
-        eb setenv DJANGO_SETTINGS_MODULE=config.settings DEBUG=False
         eb deploy
 
     - name: Setup SSH access to EB instance
