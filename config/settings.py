@@ -94,6 +94,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DEBUG = os.getenv("DEBUG", "True").lower() in ("true", "1", "yes")
 
+
 if DEBUG:
     DATABASES = {
         'default': {
