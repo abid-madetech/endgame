@@ -86,6 +86,7 @@ jobs:
       run: |
         eb ssh --command 'printenv | grep DB_HOST'
 
+
     - name: Collect static files on EB instance
       run: |
         eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py collectstatic --noinput --clear'
