@@ -71,18 +71,9 @@ jobs:
 
     - name: Deploy to Elastic Beanstalk
       run: |
-        eb init -p "Python 3.13" endgame --region eu-west-2
-        eb use Endgame-env
-        eb setenv \
-          DJANGO_SETTINGS_MODULE=config.settings \
-          DEBUG=False \
-          DB_NAME=endgame \
-          DB_USER=abid \
-          DB_PASSWORD=password \
-          DB_HOST=endgame.cdgby7ohhzqb.eu-west-2.rds.amazonaws.com \
-          DB_PORT=5432
+        eb init -p "Python 3.13" ksb --region eu-west-2
+        eb use Ksb-env
         eb deploy
-        eb printenv
 
     - name: Setup SSH access to EB instance
       run: |
