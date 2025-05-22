@@ -1,10 +1,10 @@
 name: Test and Deploy to AWS Elastic Beanstalk
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+#  push:
+#    branches:
+#      - main
 
 permissions:
   id-token: write
