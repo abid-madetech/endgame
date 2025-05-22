@@ -21,7 +21,6 @@ jobs:
           POSTGRES_DB: testdb
           POSTGRES_USER: testuser
           POSTGRES_PASSWORD: testpass
-          POSTGRES_INITDB_ARGS: "--fsync=off --full-page-writes=off --synchronous-commit=off"
         ports:
           - 5432:5432
         options: >-
