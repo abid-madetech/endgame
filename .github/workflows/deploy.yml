@@ -72,7 +72,7 @@ jobs:
     - name: Deploy to Elastic Beanstalk
       run: |
         eb init -p "Python 3.13" ksb --region eu-west-2
-        eb use Ksb-env-2
+        eb use Ksb-env
         eb deploy
 
     - name: Setup SSH access to EB instance
