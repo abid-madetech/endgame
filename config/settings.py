@@ -35,6 +35,7 @@ DEBUG = os.environ.get("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = [
     'endgame.eu-west-2.elasticbeanstalk.com',
+    'ksbs.eu-west-2.elasticbeanstalk.com',
     'localhost',
     '127.0.0.1',
 ]
