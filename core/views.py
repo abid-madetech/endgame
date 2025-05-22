@@ -1,5 +1,6 @@
 from rest_framework import viewsets
-
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from .filters import KSBFilter
 from .models import KSB
 from .serializers import KSBSerializer
@@ -15,6 +16,28 @@ class KSBViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = KSBFilter
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     return queryset
+    @swagger_auto_schema(
+        operation_description="List KSBs with optional filtering by type, name, and completion status.",
+        manual_parameters=[
+            openapi.Parameter(
+                'type',
+                openapi.IN_QUERY,
+                description="Filter by KSB type (e.g. knowledge, skill, behaviour)",
+                type=openapi.TYPE_STRING
+            ),
+            openapi.Parameter(
+                'name',
+                openapi.IN_QUERY,
+                description="Filter by name (partial match, case-insensitive)",
+                type=openapi.TYPE_STRING
+            ),
+            openapi.Parameter(
+                'completed',
+                openapi.IN_QUERY,
+                description="Filter by completion status (true/false)",
+                type=openapi.TYPE_BOOLEAN
+            ),
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
