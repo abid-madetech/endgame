@@ -44,7 +44,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'
+        python-version: '3.11'
 
     - name: Install dependencies
       run: |
@@ -69,9 +69,12 @@ jobs:
     - name: Install EB CLI
       run: pip install awsebcli
 
+    - name: Make EB hook executable
+      run: chmod +x .platform/hooks/postdeploy/01_run_migrations.sh
+
     - name: Deploy to Elastic Beanstalk
       run: |
-        eb init -p "Python 3.13" ksb --region eu-west-2
+        eb init -p "Python 3.11" ksb --region eu-west-2
         eb use Ksb-env
         eb deploy
 
@@ -82,10 +85,10 @@ jobs:
         chmod 600 ~/.ssh/endgame-eb
         echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
-    - name: Run Django migrations on EB instance
-      run: |
-        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py migrate'
-
-    - name: Collect static files on EB instance
-      run: |
-        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py collectstatic --noinput --clear'
+#    - name: Run Django migrations on EB instance
+#      run: |
+#        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py migrate'
+#
+#    - name: Collect static files on EB instance
+#      run: |
+#        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py collectstatic --noinput --clear'
