@@ -23,7 +23,7 @@ inflection==0.5.1
 iniconfig==2.1.0
 invoke==2.2.0
 jmespath==1.0.1
-packaging==25.0
+packaging==24.2
 paramiko==3.5.1
 pathspec==0.12.1
 pipx==1.7.1
