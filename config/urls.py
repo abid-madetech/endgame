@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
-from core.views import KSBViewSet, index
+from core.views import KSBViewSet, index, KSBTypeViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 router = DefaultRouter()
-router.register(r'ksbs', KSBViewSet)
+router.register(r'ksbs', KSBViewSet, basename='ksbs')
+router.register(r'ksb-types', KSBTypeViewSet, basename='ksbtype')
 
 schema_view = get_schema_view(
     openapi.Info(

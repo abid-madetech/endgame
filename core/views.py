@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .filters import KSBFilter
-from .models import KSB
-from .serializers import KSBSerializer
+from .models import KSB, KSBType
+from .serializers import KSBSerializer, KSBTypeSerializer
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters as drf_filters
@@ -57,3 +57,7 @@ class KSBViewSet(viewsets.ModelViewSet):
     )
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+class KSBTypeViewSet(viewsets.ModelViewSet):
+    queryset = KSBType.objects.all()
+    serializer_class = KSBTypeSerializer
