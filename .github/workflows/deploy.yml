@@ -16,11 +16,12 @@ jobs:
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:15-alpine
         env:
           POSTGRES_DB: testdb
           POSTGRES_USER: testuser
           POSTGRES_PASSWORD: testpass
+          POSTGRES_INITDB_ARGS: "--fsync=off --full-page-writes=off --synchronous-commit=off"
         ports:
           - 5432:5432
         options: >-
