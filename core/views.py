@@ -22,9 +22,9 @@ class KSBViewSet(viewsets.ModelViewSet):
         operation_description="List KSBs with optional filtering by type, name, and completion status.",
         manual_parameters=[
             openapi.Parameter(
-                'type',
+                'ksb_type',
                 openapi.IN_QUERY,
-                description="Filter by KSB type (e.g. knowledge, skill, behaviour)",
+                description="Filter by KSB type id. see end point /api/ksb-types/ for what id stands for",
                 type=openapi.TYPE_STRING
             ),
             openapi.Parameter(
