@@ -78,18 +78,3 @@ jobs:
         eb init -p "Python 3.11" ksb --region eu-west-2
         eb use Ksb-env
         eb deploy
-
-    - name: Setup SSH access to EB instance
-      run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.EB_SSH_KEY }}" > ~/.ssh/endgame-eb
-        chmod 600 ~/.ssh/endgame-eb
-        echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-
-#    - name: Run Django migrations on EB instance
-#      run: |
-#        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py migrate'
-#
-#    - name: Collect static files on EB instance
-#      run: |
-#        eb ssh --command 'source /var/app/venv/*/bin/activate && cd /var/app/current && python manage.py collectstatic --noinput --clear'
