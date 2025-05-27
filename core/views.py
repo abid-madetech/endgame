@@ -7,9 +7,12 @@ from .serializers import KSBSerializer, KSBTypeSerializer
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters as drf_filters
+import requests
 
 def index(request):
-    return render(request, 'index.html')
+    response = requests.get('http://localhost:8000/api/ksbs/')
+    ksbs = response.json()
+    return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type').all()
