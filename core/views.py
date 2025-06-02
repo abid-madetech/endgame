@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -6,6 +7,7 @@ from .models import KSB, KSBType
 from .serializers import KSBSerializer, KSBTypeSerializer
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import filters as drf_filters
 import requests
 
@@ -14,12 +16,19 @@ def index(request):
     ksbs = response.json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
+@login_required
+def create_ksb_view(request):
+    if request.method == "POST":
+        pass
+    return render(request, "ksbs/create_ksb.html")
+
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type').all()
     serializer_class = KSBSerializer
     filter_backends = [DjangoFilterBackend, drf_filters.OrderingFilter]
     filterset_class = KSBFilter
     ordering_fields = ['name', 'last_updated']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @swagger_auto_schema(
         operation_description="List KSBs with optional filtering by type, name, and completion status.",

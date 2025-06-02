@@ -1,5 +1,5 @@
 import pytest
-from django.urls import reverse #what is this for
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 @pytest.fixture
@@ -36,3 +36,8 @@ def test_ksbs_list_renders_correctly(authenticated_client, mocker):
     assert 'A skill' in response.content.decode()
     assert 'Theme' in response.content.decode() #has theme column
     assert 'Code Quality' in response.content.decode() #has theme name
+
+@pytest.mark.django_db
+def test_create_ksb_requires_auth(client):
+    response = client.get(reverse('create_ksb'))
+    assert response.status_code == 302
