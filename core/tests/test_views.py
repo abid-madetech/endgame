@@ -21,6 +21,7 @@ def test_ksbs_list_renders_correctly(authenticated_client, mocker):
             "description": "A skill",
             "completed": False,
             "ksb_type": 1,
+            "theme": 1,
             "last_updated": "2025-05-01T10:00:00Z"
         }
     ]
@@ -30,3 +31,4 @@ def test_ksbs_list_renders_correctly(authenticated_client, mocker):
     assert response.status_code == 200
     assert 'KSB 1' in response.content.decode()
     assert 'A skill' in response.content.decode()
+    assert 'Theme' in response.content.decode()
