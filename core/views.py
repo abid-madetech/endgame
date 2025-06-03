@@ -10,11 +10,24 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import filters as drf_filters
 import requests
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
 
 def index(request):
     response = requests.get('http://localhost:8000/api/ksbs/')
     ksbs = response.json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
+
+def signup_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form': form})
+
 
 @login_required
 def create_ksb_view(request):
