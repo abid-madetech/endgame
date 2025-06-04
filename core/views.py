@@ -6,7 +6,7 @@ from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .filters import KSBFilter
 from .models import KSB, KSBType, Theme
-from .serializers import KSBSerializer, KSBTypeSerializer
+from .serializers import KSBSerializer, KSBTypeSerializer, ThemeSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import filters as drf_filters
@@ -17,8 +17,7 @@ from django.contrib import messages
 from django.conf import settings
 
 def index(request):
-    response = requests.get('http://localhost:8000/api/ksbs/')
-    ksbs = response.json()
+    ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
 def signup_view(request):
@@ -39,7 +38,7 @@ def create_ksb_view(request):
             'name': request.POST['name'],
             'description': request.POST['description'],
             'ksb_type': int(request.POST['ksb_type']),
-            'theme': int(request.POST['theme']) if request.POST['theme'] else None,
+            'theme_id': int(request.POST['theme_id']) if request.POST['theme_id'] else None,
             'completed': 'completed' in request.POST,
         }
 
@@ -70,12 +69,19 @@ def create_ksb_view(request):
     return render(request, "ksbs/create_ksb.html", {'ksb_types': ksb_types, 'themes': themes})
 
 class KSBViewSet(viewsets.ModelViewSet):
-    queryset = KSB.objects.select_related('ksb_type').all()
+    queryset = KSB.objects.select_related('ksb_type', 'theme').all()
     serializer_class = KSBSerializer
     filter_backends = [DjangoFilterBackend, drf_filters.OrderingFilter]
     filterset_class = KSBFilter
     ordering_fields = ['name', 'last_updated']
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    @swagger_auto_schema(
+        operation_description="Create a new KSB by providing required fields. Use theme_id (not nested theme).",
+        request_body=KSBSerializer
+    )
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
 
     @swagger_auto_schema(
         operation_description="List KSBs with optional filtering by type, name, and completion status.",
@@ -120,3 +126,7 @@ class KSBViewSet(viewsets.ModelViewSet):
 class KSBTypeViewSet(viewsets.ModelViewSet):
     queryset = KSBType.objects.all()
     serializer_class = KSBTypeSerializer
+
+class ThemeViewSet(viewsets.ModelViewSet):
+    queryset = Theme.objects.all()
+    serializer_class = ThemeSerializer

@@ -57,7 +57,7 @@ def test_create_ksb_submits_to_api(authenticated_client, mocker):
         'name': 'Test KSB',
         'description': 'testing',
         'ksb_type': 1,
-        'theme': 1,
+        'theme_id': 1,
         'completed': '1'
     })
 
@@ -66,3 +66,5 @@ def test_create_ksb_submits_to_api(authenticated_client, mocker):
     payload = mock_post.call_args[1]['json']
     assert payload['name'] == 'Test KSB'
     assert payload['ksb_type'] == 1
+
+

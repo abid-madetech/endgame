@@ -17,7 +17,7 @@ class KSB(models.Model):
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(unique=True)
     ksb_type = models.ForeignKey(KSBType, on_delete=models.CASCADE)
-    theme = models.ForeignKey(Theme, on_delete=models.SET_NULL, null=True, blank=True)
+    theme = models.ForeignKey(Theme, on_delete=models.SET_NULL, null=True, blank=True, related_name='ksbs')
     completed = models.BooleanField(default=False)
     last_updated = models.DateTimeField(auto_now=True)
 

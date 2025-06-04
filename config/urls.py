@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
-from core.views import KSBViewSet, index, KSBTypeViewSet, create_ksb_view, signup_view
+from core.views import KSBViewSet, index, KSBTypeViewSet, create_ksb_view, signup_view, ThemeViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.contrib.auth import views as auth_views
@@ -26,6 +26,7 @@ from django.contrib.auth import views as auth_views
 router = DefaultRouter()
 router.register(r'ksbs', KSBViewSet, basename='ksbs')
 router.register(r'ksb-types', KSBTypeViewSet, basename='ksbtype')
+router.register(r'themes', ThemeViewSet, basename='themes')
 
 schema_view = get_schema_view(
     openapi.Info(
