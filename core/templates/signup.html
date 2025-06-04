@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Sign up</h2>
-<form method="post">
+<div class="px-4 py-5 my-2 text-center">
+    <h1>Sign up</h1>
+</div><form method="post">
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Sign Up</button>
