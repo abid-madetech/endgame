@@ -21,8 +21,8 @@ DB_PASSWORD=mypassword
 DB_HOST=postgres
 DB_PORT=5432
 
-SECRET_KEY=your_secret_key
 DEBUG=True
+BASE_URL=http://localhost:8000/
 ```
 
 ### 3. Start the PostgreSQL database using Docker
@@ -60,12 +60,17 @@ Visit [http://localhost:8000](http://localhost:8000) to see your app running.
 
 ---
 
-## ✅ Running Tests (TDD)
+## ✅ Running Tests
 
 Tests are run using `pytest`.
 
 ```bash
 pytest
+```
+To check test coverage run.
+
+```bash
+pytest --cov=core
 ```
 
 ---
@@ -85,7 +90,7 @@ You **must configure environment variables** in the Elastic Beanstalk environmen
 Example:
 
 ```bash
-eb setenv DB_NAME=yourdbname DB_USER=youruser DB_PASSWORD=yourpassword DB_HOST=yourdbhost SECRET_KEY=your_secret DEBUG=False
+eb setenv DB_NAME=yourdbname DB_USER=youruser DB_PASSWORD=yourpassword DB_HOST=yourdbhost DEBUG=False
 ```
 
 These variables must match what your `settings.py` is expecting.
