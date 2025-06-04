@@ -3,15 +3,16 @@ from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .filters import KSBFilter
-from .models import KSB, KSBType
+from .models import KSB, KSBType, Theme
 from .serializers import KSBSerializer, KSBTypeSerializer
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import filters as drf_filters
 import requests
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.conf import settings
 
 def index(request):
     response = requests.get('http://localhost:8000/api/ksbs/')
@@ -32,8 +33,39 @@ def signup_view(request):
 @login_required
 def create_ksb_view(request):
     if request.method == "POST":
-        pass
-    return render(request, "ksbs/create_ksb.html")
+        payload = {
+            'name': request.POST['name'],
+            'description': request.POST['description'],
+            'ksb_type': int(request.POST['ksb_type']),
+            'theme': int(request.POST['theme']) if request.POST['theme'] else None,
+            'completed': 'completed' in request.POST,
+        }
+
+        csrf_token = request.COOKIES.get('csrftoken')
+        api_url = 'http://localhost:8000/api/ksbs/'
+        headers = {'Content-Type': 'application/json', 'X-CSRFToken': csrf_token}
+        sessionid = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        cookies = {
+            settings.SESSION_COOKIE_NAME: sessionid,
+            'csrftoken': csrf_token
+        }
+
+        response = requests.post(api_url, json=payload, headers=headers, cookies=cookies)
+        if response.status_code == 201:
+            return redirect('home')
+        else:
+            try:
+                errors = response.json()
+            except ValueError:
+                errors = {'error': 'Unexpected error. Try again.'}
+            for field, msg in errors.items():
+                messages.error(request, f"{field}: {msg}")
+            ksb_types = KSBType.objects.all().values('id', 'name')
+            themes = Theme.objects.all().values('id', 'name')
+            return render(request, "ksbs/create_ksb.html", {'ksb_types': ksb_types, 'themes': themes})
+    ksb_types = KSBType.objects.all().values('id', 'name')
+    themes = Theme.objects.all().values('id', 'name')
+    return render(request, "ksbs/create_ksb.html", {'ksb_types': ksb_types, 'themes': themes})
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type').all()

@@ -7,7 +7,6 @@ class ThemeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class KSBSerializer(serializers.ModelSerializer):
-    theme = ThemeSerializer()
     class Meta:
         model = KSB
         fields = ['id', 'name', 'description', 'completed', 'ksb_type', 'theme', 'last_updated']
