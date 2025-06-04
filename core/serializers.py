@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from .models import KSB, KSBType, Theme
 
+
 class ThemeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Theme
         fields = '__all__'
+
 
 class KSBSerializer(serializers.ModelSerializer):
     theme_id = serializers.PrimaryKeyRelatedField(
@@ -30,6 +32,7 @@ class KSBSerializer(serializers.ModelSerializer):
             'completed',
             'last_updated'
         ]
+
 
 class KSBTypeSerializer(serializers.ModelSerializer):
     class Meta:

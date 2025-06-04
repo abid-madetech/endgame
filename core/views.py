@@ -16,9 +16,11 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.conf import settings
 
+
 def index(request):
     ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -67,6 +69,7 @@ def create_ksb_view(request):
     ksb_types = KSBType.objects.all().values('id', 'name')
     themes = Theme.objects.all().values('id', 'name')
     return render(request, "ksbs/create_ksb.html", {'ksb_types': ksb_types, 'themes': themes})
+
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type', 'theme').all()
@@ -123,9 +126,11 @@ class KSBViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
 
+
 class KSBTypeViewSet(viewsets.ModelViewSet):
     queryset = KSBType.objects.all()
     serializer_class = KSBTypeSerializer
+
 
 class ThemeViewSet(viewsets.ModelViewSet):
     queryset = Theme.objects.all()
