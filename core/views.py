@@ -1,3 +1,5 @@
+from urllib.parse import urljoin
+
 from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
@@ -42,7 +44,7 @@ def create_ksb_view(request):
         }
 
         csrf_token = request.COOKIES.get('csrftoken')
-        api_url = 'http://localhost:8000/api/ksbs/'
+        api_url = urljoin(settings.BASE_URL, 'api/ksbs/')
         headers = {'Content-Type': 'application/json', 'X-CSRFToken': csrf_token}
         sessionid = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
         cookies = {
