@@ -70,6 +70,11 @@ def create_ksb_view(request):
     themes = Theme.objects.all().values('id', 'name')
     return render(request, "ksbs/create_ksb.html", {'ksb_types': ksb_types, 'themes': themes})
 
+@login_required
+def update_ksb_view(request, ksb_id):
+    if request.method == "POST":
+        pass
+    return render(request, "ksbs/update_ksb.html")
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type', 'theme').all()
