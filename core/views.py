@@ -72,9 +72,18 @@ def create_ksb_view(request):
 
 @login_required
 def update_ksb_view(request, ksb_id):
+    api_url = urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}')
     if request.method == "POST":
         pass
-    return render(request, "ksbs/update_ksb.html")
+
+    ksb = requests.get(api_url).json()
+    ksb_types = KSBType.objects.all().values('id', 'name')
+    themes = Theme.objects.all().values('id', 'name')
+    return render(request, "ksbs/update_ksb.html", {
+        'ksb': ksb,
+        'ksb_types': ksb_types,
+        'themes': themes
+    })
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type', 'theme').all()

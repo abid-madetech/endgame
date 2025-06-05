@@ -24,26 +24,27 @@ def test_update_ksb_requires_auth(client):
 
 @pytest.mark.django_db
 def test_authenticated_user_can_access_update_page(authenticated_client):
-    response = authenticated_client.get(reverse('create_ksb'))
+    fake_id = str(uuid4())
+    response = authenticated_client.get(reverse('update_ksb', args=[fake_id]))
     assert response.status_code == 200
-    assert 'Create KSB' in response.content.decode()
+    assert 'Update KSB' in response.content.decode()
 
 
-# @pytest.mark.django_db
-# def test_create_ksb_submits_to_api(authenticated_client, mocker):
-#     mock_post = mocker.patch('core.views.requests.post')
-#     mock_post.return_value.status_code = 201
-#
-#     response = authenticated_client.post(reverse('create_ksb'), {
-#         'name': 'Test KSB',
-#         'description': 'testing',
-#         'ksb_type': 1,
-#         'theme_id': 1,
-#         'completed': '1'
-#     })
-#
-#     assert response.status_code == 302  # Redirect after success
-#     mock_post.assert_called_once()
-#     payload = mock_post.call_args[1]['json']
-#     assert payload['name'] == 'Test KSB'
-#     assert payload['ksb_type'] == 1
+@pytest.mark.django_db
+def test_update_ksb_form_loads(authenticated_client, mocker):
+    mock_get = mocker.patch('core.views.requests.get')
+    fake_ksb = {
+        "id": str(uuid4()),
+        "name": "Edit Me",
+        "description": "Original",
+        "ksb_type": 1,
+        "completed": True,
+        "theme": 2,
+    }
+    mock_get.return_value.json.return_value = fake_ksb
+
+    url = reverse('update_ksb', args=[fake_ksb['id']])
+    response = authenticated_client.get(url)
+
+    assert response.status_code == 200
+    assert 'Edit Me' in response.content.decode()
