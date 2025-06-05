@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework import permissions
-from core.views import KSBViewSet, index, KSBTypeViewSet, create_ksb_view, signup_view, ThemeViewSet, update_ksb_view
+from core.views import KSBViewSet, index, KSBTypeViewSet, create_ksb_view, signup_view, ThemeViewSet, update_ksb_view, ksb_detail_view
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.contrib.auth import views as auth_views
@@ -48,6 +48,7 @@ urlpatterns = [
     path('', index, name='home'),
     path('ksbs/create', create_ksb_view, name='create_ksb'),
     path('ksbs/<uuid:ksb_id>/update', update_ksb_view, name='update_ksb'),
+    path('ksbs/<uuid:ksb_id>', ksb_detail_view, name='view_ksb'),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -21,6 +21,9 @@ def index(request):
     ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
+def ksb_detail_view(request, ksb_id):
+    ksb = requests.get(urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}')).json()
+    return render(request, 'ksbs/view_ksb.html', {'ksb': ksb})
 
 def signup_view(request):
     if request.method == 'POST':
