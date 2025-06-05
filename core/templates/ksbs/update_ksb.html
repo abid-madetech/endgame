@@ -21,7 +21,7 @@
             <option value>Select a KSB Type</option>
 
             {% for type in ksb_types %}
-            <option value="{{ type.id }}" {% if type.id == ksb.ksb_type %}selected{% endif %}>{{ type.name }}</option>
+            <option value="{{ type.id }}" {% if type.id|stringformat:"s" == ksb.ksb_type|stringformat:"s" %}selected{% endif %}>{{ type.name }}</option>
             {% endfor %}
         </select>
     <p>
@@ -30,7 +30,8 @@
         <select name="theme_id">
             <option value>Select a EPA theme</option>
             {% for theme in themes %}
- <option value="{{ theme.id }}" {% if theme.id == ksb.theme %}selected{% endif %}>{{ theme.name }}</option>            {% endfor %}
+            <option value="{{ theme.id }}" {% if theme.id|stringformat:"s" == ksb.theme|stringformat:"s" %}selected{% endif %}>{{ theme.name }}</option>
+            {% endfor %}
         </select>
     <p>
         <label for="completed">Completed:</label>

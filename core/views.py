@@ -72,13 +72,42 @@ def create_ksb_view(request):
 
 @login_required
 def update_ksb_view(request, ksb_id):
-    api_url = urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}')
-    if request.method == "POST":
-        pass
-
+    api_url = urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}/')
     ksb = requests.get(api_url).json()
     ksb_types = KSBType.objects.all().values('id', 'name')
     themes = Theme.objects.all().values('id', 'name')
+    if request.method == "POST":
+        payload = {
+            'name': request.POST['name'],
+            'description': request.POST['description'],
+            'ksb_type': int(request.POST['ksb_type']),
+            'theme_id': int(request.POST['theme_id']) if request.POST['theme_id'] else None,
+            'completed': 'completed' in request.POST,
+        }
+        csrf_token = request.COOKIES.get('csrftoken')
+        headers = {'Content-Type': 'application/json', 'X-CSRFToken': csrf_token}
+        sessionid = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        cookies = {
+            settings.SESSION_COOKIE_NAME: sessionid,
+            'csrftoken': csrf_token
+        }
+
+        response = requests.patch(api_url, json=payload, headers=headers, cookies=cookies)
+        if response.status_code == 200:
+            return redirect('home')
+        else:
+            try:
+                errors = response.json()
+            except ValueError:
+                errors = {'error': 'Unexpected error. Try again.', 'status code': f'{response.status_code}'}
+            for field, msg in errors.items():
+                messages.error(request, f"{field}: {msg}")
+            return render(request, "ksbs/update_ksb.html", {
+                'ksb': ksb,
+                'ksb_types': ksb_types,
+                'themes': themes
+            })
+
     return render(request, "ksbs/update_ksb.html", {
         'ksb': ksb,
         'ksb_types': ksb_types,

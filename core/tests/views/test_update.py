@@ -48,3 +48,35 @@ def test_update_ksb_form_loads(authenticated_client, mocker):
 
     assert response.status_code == 200
     assert 'Edit Me' in response.content.decode()
+    assert 'Original' in response.content.decode()
+
+@pytest.mark.django_db
+def test_update_ksb_submit_patch(authenticated_client, mocker):
+    fake_id = str(uuid4())
+
+    mock_get = mocker.patch('core.views.requests.get')
+    mock_get.return_value.json.return_value = {
+        "id": fake_id,
+        "name": "Old Name",
+        "description": "Original",
+        "ksb_type": 1,
+        "completed": False,
+        "theme": None,
+    }
+
+    mock_patch = mocker.patch('core.views.requests.patch')
+    mock_patch.return_value.status_code = 200
+
+    url = reverse('update_ksb', args=[fake_id])
+    response = authenticated_client.post(url, {
+        'name': 'Updated Name',
+        'description': 'New Desc',
+        'ksb_type': 1,
+        'completed': 'on',
+        'theme_id': '',
+    })
+
+    assert response.status_code == 302
+    mock_patch.assert_called_once()
+    payload = mock_patch.call_args[1]['json']
+    assert payload['name'] == 'Updated Name'
