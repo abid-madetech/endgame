@@ -22,11 +22,11 @@ def test_update_ksb_requires_auth(client):
     assert response.status_code == 302
 
 
-# @pytest.mark.django_db
-# def test_authenticated_user_can_access_create_page(authenticated_client):
-#     response = authenticated_client.get(reverse('create_ksb'))
-#     assert response.status_code == 200
-#     assert 'Create KSB' in response.content.decode()
+@pytest.mark.django_db
+def test_authenticated_user_can_access_update_page(authenticated_client):
+    response = authenticated_client.get(reverse('create_ksb'))
+    assert response.status_code == 200
+    assert 'Create KSB' in response.content.decode()
 
 
 # @pytest.mark.django_db
