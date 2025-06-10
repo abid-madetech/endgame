@@ -4,4 +4,33 @@
 <div class="px-4 py-5 my-2 text-center">
     <h1>View KSB</h1>
 </div>
+
+<div class="container mt-4">
+    <div class="card p-4">
+        <h3 class="mb-3">{{ ksb.name }}</h3>
+
+        <p><strong>Description:</strong> {{ ksb.description }}</p>
+
+        <p><strong>Type:</strong>
+            {% if ksb.ksb_type == 1 %}Knowledge
+            {% elif ksb.ksb_type == 2 %}Skill
+            {% elif ksb.ksb_type == 3 %}Behaviour
+            {% else %}Unknown{% endif %}
+        </p>
+
+        <p><strong>Theme:</strong>
+            {% if ksb.theme %}{{ ksb.theme.name }}
+            {% else %}None{% endif %}
+        </p>
+
+        <p><strong>Completed:</strong> {{ ksb.completed|yesno:"Yes,No" }}</p>
+
+        <p><strong>Last Updated:</strong> {{ ksb.last_updated }}</p>
+
+        <div class="mt-4">
+            <a href="{% url 'update_ksb' ksb.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'home' %}" class="btn btn-secondary">Back to all KSBs</a>
+        </div>
+    </div>
+</div>
 {% endblock %}

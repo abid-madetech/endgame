@@ -26,3 +26,5 @@ def test_ksbs_list_renders_correctly(client, mocker):
     assert 'A skill' in response.content.decode()
     assert 'Theme' in response.content.decode()  # has theme column
     assert 'Code Quality' in response.content.decode()  # has theme name
+    assert 'View' in response.content.decode()  # has theme name
+    assert 'Edit' in response.content.decode()  # has theme name

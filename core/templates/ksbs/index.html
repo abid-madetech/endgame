@@ -18,6 +18,7 @@
     <th scope="col">Theme</th>
     <th scope="col">Completed</th>
     <th scope="col">Last Updated</th>
+    <th scope="col">Actions</th>
     </thead>
     <tbody class="table-group-divider">
     {% for ksb in ksbs %}
@@ -28,6 +29,10 @@
         <td>{{ksb.theme}}</td>
         <td>{{ksb.completed}}</td>
         <td>{{ksb.last_updated}}</td>
+        <td>
+          <a href="{% url 'view_ksb' ksb.id %}">View</a>
+          <a href="{% url 'update_ksb' ksb.id %}">Edit</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
