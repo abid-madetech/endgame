@@ -1,12 +1,14 @@
+from uuid import uuid4
 import pytest
 from django.urls import reverse
 
 @pytest.mark.django_db
 def test_ksbs_list_renders_correctly(client, mocker):
+    fake_id = str(uuid4())
     mock_get = mocker.patch('core.views.requests.get')
     mock_get.return_value.json.return_value = [
         {
-            "id": "123",
+            "id": fake_id,
             "name": "KSB 1",
             "description": "A skill",
             "completed": False,
