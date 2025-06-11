@@ -31,6 +31,7 @@
         <td>{{ksb.last_updated}}</td>
         <td>
           <a href="{% url 'view_ksb' ksb.id %}">View</a>
+            {% if user.is_authenticated %}
           <a href="{% url 'update_ksb' ksb.id %}">Edit</a>
         <form action="{% url 'delete_ksb' ksb.id %}" method="post" style="display:inline;">
             {% csrf_token %}
@@ -39,6 +40,7 @@
                 Delete
             </button>
         </form>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

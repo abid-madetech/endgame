@@ -1,7 +1,17 @@
 from uuid import uuid4
 import pytest
 from django.urls import reverse
+from django.contrib.auth.models import User
 
+@pytest.fixture
+def user(db):
+    return User.objects.create_user(username='user', password='pass')
+
+
+@pytest.fixture
+def authenticated_client(client, user):
+    client.login(username='user', password='pass')
+    return client
 @pytest.mark.django_db
 def test_ksbs_list_renders_correctly(client, mocker):
     fake_id = str(uuid4())
@@ -29,5 +39,12 @@ def test_ksbs_list_renders_correctly(client, mocker):
     assert 'Theme' in response.content.decode()
     assert 'Code Quality' in response.content.decode()
     assert 'View' in response.content.decode()
-    assert 'Edit' in response.content.decode()
-    assert 'Delete' in response.content.decode()
+
+@pytest.mark.django_db
+def test_ksbs_list_doesnt_render_edit_delete_actions(authenticated_client, mocker):
+    mocker.patch('core.views.requests.get')
+    response = authenticated_client.get(reverse('home'))
+
+    assert response.status_code == 200
+    assert 'Edit' not in response.content.decode()
+    assert 'Delete' not in response.content.decode()
