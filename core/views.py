@@ -21,9 +21,11 @@ def index(request):
     ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
+
 def ksb_detail_view(request, ksb_id):
     ksb = requests.get(urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}')).json()
     return render(request, 'ksbs/view_ksb.html', {'ksb': ksb})
+
 
 def signup_view(request):
     if request.method == 'POST':
@@ -34,6 +36,7 @@ def signup_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
+
 
 @login_required
 def create_ksb_view(request):
@@ -71,6 +74,7 @@ def create_ksb_view(request):
     ksb_types = KSBType.objects.all().values('id', 'name')
     themes = Theme.objects.all().values('id', 'name')
     return render(request, "ksbs/create_ksb.html", {'ksb_types': ksb_types, 'themes': themes})
+
 
 @login_required
 def update_ksb_view(request, ksb_id):
@@ -116,20 +120,29 @@ def update_ksb_view(request, ksb_id):
         'themes': themes
     })
 
+
 @login_required
 def delete_ksb(request, ksb_id):
-    api_url = urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}/')
-    response = requests.delete(api_url)
-    if response.status_code == 200:
+    if request.method == 'POST':
+        api_url = urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}/')
+        csrf_token = request.COOKIES.get('csrftoken')
+        headers = {'Content-Type': 'application/json', 'X-CSRFToken': csrf_token}
+        sessionid = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        cookies = {
+            settings.SESSION_COOKIE_NAME: sessionid,
+            'csrftoken': csrf_token
+        }
+
+        response = requests.delete(api_url, headers=headers, cookies=cookies)
+
+        if response.status_code == 204:
+            messages.success(request, 'KSB deleted successfully.')
+        else:
+            messages.error(request, 'Failed to delete the KSB.')
+
         return redirect('home')
-    else:
-        try:
-            errors = response.json()
-        except ValueError:
-            errors = {'error': 'Unexpected error. Try again.', 'status code': f'{response.status_code}'}
-        for field, msg in errors.items():
-            messages.error(request, f"{field}: {msg}")
-        return render(request, "ksbs/index.html")
+    return redirect('home')
+
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type', 'theme').all()

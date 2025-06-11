@@ -22,7 +22,12 @@ def test_delete_requires_auth(client):
     assert response.status_code == 302
 
 @pytest.mark.django_db
-def test_delete_ksb_successfully(authenticated_client):
+def test_delete_ksb_successfully(authenticated_client, mocker):
+    mock_delete = mocker.patch('core.views.requests.delete')
+    mock_delete.return_value.status_code = 204
+
     fake_id = str(uuid4())
     response = authenticated_client.get(reverse('delete_ksb', args=[fake_id]))
-    assert response.status_code == 200
+
+    assert response.status_code == 302
+    assert response.url == reverse('home')
