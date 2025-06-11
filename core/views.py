@@ -179,8 +179,10 @@ class KSBViewSet(viewsets.ModelViewSet):
 class KSBTypeViewSet(viewsets.ModelViewSet):
     queryset = KSBType.objects.all()
     serializer_class = KSBTypeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class ThemeViewSet(viewsets.ModelViewSet):
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
