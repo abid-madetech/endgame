@@ -118,7 +118,18 @@ def update_ksb_view(request, ksb_id):
 
 @login_required
 def delete_ksb(request, ksb_id):
-    pass
+    api_url = urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}/')
+    response = requests.delete(api_url)
+    if response.status_code == 200:
+        return redirect('home')
+    else:
+        try:
+            errors = response.json()
+        except ValueError:
+            errors = {'error': 'Unexpected error. Try again.', 'status code': f'{response.status_code}'}
+        for field, msg in errors.items():
+            messages.error(request, f"{field}: {msg}")
+        return render(request, "ksbs/index.html")
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type', 'theme').all()

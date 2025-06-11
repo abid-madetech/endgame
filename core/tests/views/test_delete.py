@@ -20,3 +20,9 @@ def test_delete_requires_auth(client):
     fake_id = str(uuid4())
     response = client.get(reverse('delete_ksb', args=[fake_id]))
     assert response.status_code == 302
+
+@pytest.mark.django_db
+def test_delete_ksb_successfully(authenticated_client):
+    fake_id = str(uuid4())
+    response = authenticated_client.get(reverse('delete_ksb', args=[fake_id]))
+    assert response.status_code == 200
