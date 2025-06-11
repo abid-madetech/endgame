@@ -28,7 +28,8 @@
         <p><strong>Last Updated:</strong> {{ ksb.last_updated }}</p>
 
         <div class="mt-4">
-            <a href="{% url 'update_ksb' ksb.id %}" class="btn btn-primary">Edit</a>
+            {% url 'update_ksb' ksb.id as update_ksb_url%}
+            <a href="{{ update_ksb_url }}" class="btn btn-primary">Edit</a>
             <a href="{% url 'home' %}" class="btn btn-secondary">Back to all KSBs</a>
         </div>
     </div>
