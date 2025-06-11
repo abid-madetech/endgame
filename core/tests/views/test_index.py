@@ -26,7 +26,8 @@ def test_ksbs_list_renders_correctly(client, mocker):
     assert response.status_code == 200
     assert 'KSB 1' in response.content.decode()
     assert 'A skill' in response.content.decode()
-    assert 'Theme' in response.content.decode()  # has theme column
-    assert 'Code Quality' in response.content.decode()  # has theme name
-    assert 'View' in response.content.decode()  # has theme name
-    assert 'Edit' in response.content.decode()  # has theme name
+    assert 'Theme' in response.content.decode()
+    assert 'Code Quality' in response.content.decode()
+    assert 'View' in response.content.decode()
+    assert 'Edit' in response.content.decode()
+    assert 'Delete' in response.content.decode()
