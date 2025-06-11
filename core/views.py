@@ -35,7 +35,6 @@ def signup_view(request):
         form = UserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
-
 @login_required
 def create_ksb_view(request):
     if request.method == "POST":
@@ -116,6 +115,10 @@ def update_ksb_view(request, ksb_id):
         'ksb_types': ksb_types,
         'themes': themes
     })
+
+@login_required
+def delete_ksb(request, ksb_id):
+    pass
 
 class KSBViewSet(viewsets.ModelViewSet):
     queryset = KSB.objects.select_related('ksb_type', 'theme').all()
