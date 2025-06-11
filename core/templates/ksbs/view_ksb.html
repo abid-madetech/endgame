@@ -29,7 +29,9 @@
 
         <div class="mt-4">
             {% url 'update_ksb' ksb.id as update_ksb_url%}
+            {% url 'delete_ksb' ksb.id as delete_ksb_url%}
             <a href="{{ update_ksb_url }}" class="btn btn-primary">Edit</a>
+            <a href="{{ delete_ksb_url }}" class="btn btn-primary">Delete</a>
             <a href="{% url 'home' %}" class="btn btn-secondary">Back to all KSBs</a>
         </div>
     </div>
