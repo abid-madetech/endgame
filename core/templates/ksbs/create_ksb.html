@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="px-4 py-5 my-2 text-center">
+    <h1>Create KSB</h1>
+</div>
+{% if messages %}
+<ul>
+    {% for message in messages %}
+    <li style="color: red;">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+    <p><label>Name:</label> <input type="text" name="name" required placeholder="K1"></p>
+    <p><label>Description:</label> <textarea name="description" required></textarea></p>
+    <p>
+        <label>Type:</label>
+        <select name="ksb_type" required>
+            <option value>Select a KSB Type</option>
+
+            {% for type in ksb_types %}
+            <option value="{{ type.id }}">{{ type.name }}</option>
+            {% endfor %}
+        </select>
+    <p>
+    <p>
+        <label>Theme:</label>
+        <select name="theme_id">
+            <option value>Select a EPA theme</option>
+            {% for theme in themes %}
+            <option value="{{ theme.id }}">{{ theme.name }}</option>
+            {% endfor %}
+        </select>
+    <p>
+        <label for="completed">Completed:</label>
+        <input type="checkbox" id="completed" name="completed">
+    </p>
+
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}

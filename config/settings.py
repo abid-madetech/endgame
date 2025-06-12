@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-#^8y^&i&(1+%ci9iy&nvur=^qedz(-oj&1*&*^9(xwg(i@aggt
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True") == "True"
-
+BASE_URL = os.environ.get("BASE_URL", "http://localhost:8000/")
 ALLOWED_HOSTS = [
     'endgame.eu-west-2.elasticbeanstalk.com',
     'ksbs.eu-west-2.elasticbeanstalk.com',
