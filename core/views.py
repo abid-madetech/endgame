@@ -23,11 +23,11 @@ def index(request):
     # ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     # return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
+    url = urljoin(settings.BASE_URL, 'api/ksbs/')
+    logger.warning(f"Attempting request to: {url}")
     try:
-        url = urljoin(settings.BASE_URL, 'api/ksbs/')
-        logger.warning(f"Attempting request to: {url}")
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()
+        response = requests.get(url, timeout=10)
+        logger.warning(f"Response status: {response.status_code}")
         ksbs = response.json()
     except Exception as e:
         logger.error(f"Failed to fetch KSBs: {e}")
