@@ -38,6 +38,7 @@ jobs:
       DEBUG: True
       BASE_URL: http://localhost:8000/
       DJANGO_SETTINGS_MODULE: config.settings
+      ALLOWED_HOSTS: localhost
 
     steps:
     - name: Checkout code
@@ -57,9 +58,29 @@ jobs:
       run: |
         until pg_isready -h localhost -p 5432; do sleep 1; done
 
-    - name: Run Django migrations and tests with PostgreSQL
+    - name: Run Django migrations
       run: |
         python manage.py migrate --noinput
+
+    - name: Start Django dev server in background
+      run: |
+        nohup python manage.py runserver 0.0.0.0:8000 > server.log 2>&1 &
+
+    - name: Wait for Django server to be ready
+      run: |
+        for i in {1..10}; do
+          if curl -s http://localhost:8000/ > /dev/null; then
+            echo "✅ Server is ready."
+            break
+          fi
+          echo "⏳ Waiting for server to start ($i/10)..."
+          sleep 1
+        done
+#        echo "❌ Server did not start in time."
+#        exit 1
+
+    - name: Run tests
+      run: |
         pytest
 
     - name: Configure AWS credentials using OIDC
