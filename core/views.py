@@ -23,15 +23,14 @@ def index(request):
     # ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     # return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
-    print("DEBUG: BASE_URL =", os.environ.get("BASE_URL", "not set"))
-    logger.warning("BASE_URL from settings: %s", settings.BASE_URL)
-
     try:
-        response = requests.get(urljoin(settings.BASE_URL, '/api/ksbs/'))
+        url = urljoin(settings.BASE_URL, 'api/ksbs/')
+        logger.warning(f"Attempting request to: {url}")
+        response = requests.get(url, timeout=5)
         response.raise_for_status()
         ksbs = response.json()
     except Exception as e:
-        print("DEBUG: Request to KSBS API failed:", e)
+        logger.error(f"Failed to fetch KSBs: {e}")
         ksbs = []
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
