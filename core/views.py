@@ -1,5 +1,5 @@
 from urllib.parse import urljoin
-
+import logging
 from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
@@ -16,8 +16,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.conf import settings
 
-
+logger = logging.getLogger(__name__)
 def index(request):
+    logger.warning(f"BASE_URL is: {settings.BASE_URL}")
     ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
