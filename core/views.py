@@ -18,8 +18,20 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 def index(request):
-    logger.warning(f"BASE_URL is: {settings.BASE_URL}")
-    ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
+    # logger.warning(f"BASE_URL is: {settings.BASE_URL}")
+    # ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
+    # return render(request, 'ksbs/index.html', {'ksbs': ksbs})
+
+    print("DEBUG: BASE_URL =", os.environ.get("BASE_URL", "not set"))
+    logger.warning("BASE_URL from settings: %s", settings.BASE_URL)
+
+    try:
+        response = requests.get(urljoin(settings.BASE_URL, '/api/ksbs/'))
+        response.raise_for_status()
+        ksbs = response.json()
+    except Exception as e:
+        print("DEBUG: Request to KSBS API failed:", e)
+        ksbs = []
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
 
 
