@@ -31,7 +31,7 @@ WHITENOISE_USE_FINDERS = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-#^8y^&i&(1+%ci9iy&nvur=^qedz(-oj&1*&*^9(xwg(i@aggt'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:8000/")
 ALLOWED_HOSTS = [
     'endgame.eu-west-2.elasticbeanstalk.com',
@@ -39,6 +39,7 @@ ALLOWED_HOSTS = [
     'testing.eu-west-2.elasticbeanstalk.com',
     'localhost',
     '127.0.0.1',
+    '*'
 ]
 
 REST_FRAMEWORK = {
