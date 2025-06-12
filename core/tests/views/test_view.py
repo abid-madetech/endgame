@@ -51,6 +51,15 @@ def test_view_actions_are_available(client, mocker):
 
     response = client.get(reverse('view_ksb', args=[fake_id]))
     assert response.status_code == 200
-    assert "Edit" in response.content.decode()
     assert "Back to all KSBs" in response.content.decode()
-    assert "Delete" in response.content.decode()
+
+
+@pytest.mark.django_db
+def test_ksb_view_doesnt_render_edit_delete_actions(client, mocker):
+    mocker.patch('core.views.requests.get')
+    fake_id = str(uuid4())
+    response = client.get(reverse('view_ksb', args=[fake_id]))
+
+    assert response.status_code == 200
+    assert 'Edit' not in response.content.decode()
+    assert 'Delete' not in response.content.decode()
