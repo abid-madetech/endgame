@@ -19,29 +19,8 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 def index(request):
-    # logger.warning(f"BASE_URL is: {settings.BASE_URL}")
-    # ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
-    # return render(request, 'ksbs/index.html', {'ksbs': ksbs})
-    try:
-        test_url = "https://www.boredapi.com/api/activity"
-        logger.warning(f"Testing external API: {test_url}")
-        test_response = requests.get(test_url, timeout=10)
-        logger.warning(f"External API status: {test_response.status_code}")
-        logger.warning(f"External API response: {test_response.json()}")
-    except Exception as e:
-        logger.error(f"External API test failed: {e}")
-
-    url = urljoin(settings.BASE_URL, 'api/ksbs/')
-    logger.warning(f"Attempting request to: {url}")
-    try:
-        response = requests.get(url, timeout=10)
-        logger.warning(f"Response status: {response.status_code}")
-        ksbs = response.json()
-    except Exception as e:
-        logger.error(f"Failed to fetch KSBs: {e}")
-        ksbs = []
+    ksbs = requests.get(urljoin(settings.BASE_URL, 'api/ksbs/')).json()
     return render(request, 'ksbs/index.html', {'ksbs': ksbs})
-
 
 def ksb_detail_view(request, ksb_id):
     ksb = requests.get(urljoin(settings.BASE_URL, f'api/ksbs/{ksb_id}')).json()
