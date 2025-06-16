@@ -98,5 +98,5 @@ jobs:
     - name: Deploy to Elastic Beanstalk
       run: |
         eb init -p "Python 3.11" ksb --region eu-west-2
-        eb use Ksb-env-1
+        eb use Ksb-env
         eb deploy
