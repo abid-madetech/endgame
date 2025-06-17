@@ -42,6 +42,11 @@ ALLOWED_HOSTS = [
     '*'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'http://ksbs.eu-west-2.elasticbeanstalk.com',
+    'http://localhost',
+]
+
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',

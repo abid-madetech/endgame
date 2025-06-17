@@ -76,8 +76,6 @@ jobs:
           echo "⏳ Waiting for server to start ($i/10)..."
           sleep 1
         done
-#        echo "❌ Server did not start in time."
-#        exit 1
 
     - name: Run tests
       run: |
