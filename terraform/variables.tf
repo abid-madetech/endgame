@@ -11,5 +11,5 @@ variable "db_username" {
 variable "db_password" {
   description = "RDS master password"
   sensitive   = true
-  default     = "S3cureP@ssw0rd!"
+  default     = "S3curePassw0rd!"
 }
