@@ -1,12 +1,14 @@
 resource "aws_db_subnet_group" "public_subnet_group" {
   name       = "public-db-subnet-group"
-  subnet_ids = [aws_subnet.public_subnet.id]
+  subnet_ids = [
+    aws_subnet.public_subnet.id,
+    aws_subnet.public_subnet_2.id
+  ]
 
   tags = {
     Name = "public-db-subnet-group"
   }
 }
-
 resource "aws_db_instance" "postgres" {
   allocated_storage       = 20
   engine                  = "postgres"
