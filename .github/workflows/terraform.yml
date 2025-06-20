@@ -30,7 +30,7 @@ jobs:
           terraform init
 
       - name: Terraform Plan
-        run: terraform plan -var="db_password=${{ secrets.RDS_DB_PASSWORD }}"
+        run: terraform plan -var="db_password=${{ secrets.RDS_PASSWORD }}"
         working-directory: terraform
 
       - name: Terraform Apply
