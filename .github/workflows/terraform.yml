@@ -34,6 +34,6 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var="db_password=${{ secrets.RDS_DB_PASSWORD }}"
+        run: terraform apply -auto-approve -var="db_password=${{ secrets.RDS_PASSWORD }}"
         working-directory: terraform
 
