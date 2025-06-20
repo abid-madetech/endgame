@@ -15,10 +15,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials using OIDC
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::261219435789:role/github-actions-terraform-role
+          role-to-assume: arn:aws:iam::261219435789:role/github-actions-eb-deploy-role
           aws-region: eu-west-2
 
       - name: Setup Terraform
