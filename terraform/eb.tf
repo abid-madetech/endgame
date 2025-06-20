@@ -22,7 +22,7 @@ resource "aws_elastic_beanstalk_environment" "endgame_env" {
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "RDS_DB_NAME"
-    value     = aws_db_instance.postgres.name
+    value     = "postgres"
   }
 
   setting {
