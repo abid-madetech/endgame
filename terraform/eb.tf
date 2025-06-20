@@ -5,7 +5,7 @@ resource "aws_elastic_beanstalk_application" "endgame_app" {
 resource "aws_elastic_beanstalk_environment" "endgame_env" {
   name                = "endgame-env"
   application         = aws_elastic_beanstalk_application.endgame_app.name
-  solution_stack_name = "64bit Amazon Linux 2 v5.8.4 running Python 3.11"
+  solution_stack_name = "64bit Amazon Linux 2 v5.9.0 running Python 3.11"
 
   setting {
     namespace = "aws:elasticbeanstalk:application:environment"
