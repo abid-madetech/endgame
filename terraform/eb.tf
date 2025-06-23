@@ -8,6 +8,12 @@ resource "aws_elastic_beanstalk_environment" "endgame_env" {
   solution_stack_name = "64bit Amazon Linux 2023 v4.5.2 running Python 3.11"
 
   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = aws_iam_instance_profile.eb_instance_profile.name
+  }
+
+  setting {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "DJANGO_SETTINGS_MODULE"
     value     = "config.settings"
