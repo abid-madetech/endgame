@@ -7,6 +7,13 @@ resource "aws_elastic_beanstalk_environment" "endgame_env" {
   application         = aws_elastic_beanstalk_application.endgame_app.name
   solution_stack_name = "64bit Amazon Linux 2023 v4.5.2 running Python 3.11"
 
+
+  depends_on = [
+    aws_iam_instance_profile.eb_instance_profile,
+    aws_subnet.public_subnet,
+    aws_subnet.public_subnet_2
+  ]
+
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
@@ -47,5 +54,20 @@ resource "aws_elastic_beanstalk_environment" "endgame_env" {
     namespace = "aws:elasticbeanstalk:application:environment"
     name      = "RDS_PORT"
     value     = "5432"
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "Subnets"
+    value     = join(",", [
+      aws_subnet.public_subnet.id,
+      aws_subnet.public_subnet_2.id
+    ])
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "VPCId"
+    value     = aws_vpc.main.id
   }
 }
